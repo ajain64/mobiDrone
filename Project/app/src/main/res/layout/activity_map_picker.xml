@@ -14,13 +14,16 @@
         android:layout_weight="0.5"
         android:id="@+id/map"
         tools:context=".MapLocationActivity"
-        android:name="com.google.android.gms.maps.MapFragment"/>
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_marginBottom="20dp"/>
 
-    <Button
+    <TextView
+        android:layout_gravity="left"
         android:id="@+id/pickerButton"
         android:layout_width="275dp"
         android:layout_height="wrap_content"
-        android:text="Mark Destination" />
+        android:text="Favorite Locations: " />
+
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="match_parent"

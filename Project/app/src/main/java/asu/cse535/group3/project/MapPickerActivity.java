@@ -34,6 +34,7 @@ public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCa
         GoogleApiClient.OnConnectionFailedListener,LocationListener {
 
     private GoogleMap mGoogleMap;
+    boolean initialpass;
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
     Location mLastLocation;
@@ -42,7 +43,7 @@ public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
+        initialpass = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_picker);
 
@@ -132,25 +133,37 @@ public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCa
     public void onLocationChanged(Location location)
     {
 
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
-        return;
-        /*mLastLocation = location;
+
+
+/*
+        mLastLocation = location;
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
 
         //Place current location marker
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        //LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
-
-        //move map camera
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
+        mCurrLocationMarker.setDraggable(true);
         */
+
+        if (initialpass==true){
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+            initialpass = false;
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(latLng);
+            markerOptions.draggable(true);
+            markerOptions.title("Current Position");
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+            mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+            mCurrLocationMarker.setDraggable(true);
+        }
+
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
