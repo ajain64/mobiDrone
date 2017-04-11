@@ -1,35 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="asu.cse535.group3.project.MainActivity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:gravity="center">
 
-    <LinearLayout
-        android:layout_width="368dp"
-        android:layout_height="495dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
 
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView"
-            android:layout_width="match_parent"
-            android:layout_height="220dp" />
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_weight="0.5"
+        android:id="@+id/map"
+        tools:context=".MapLocationActivity"
+        android:name="com.google.android.gms.maps.MapFragment"/>
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/Favorite_Places"
-            android:layout_weight="0.24" />
+    <Button
+        android:id="@+id/pickerButton"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:text="Mark Destination" />
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:entries="@array/Favorite_Places" />
 
-        <Button
-            android:id="@+id/requestButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Request Drone" />
 
-    </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/requestButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Request Drone"
+        android:layout_weight="0.24" />
+
+
+</LinearLayout>

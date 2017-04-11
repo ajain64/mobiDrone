@@ -22,9 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(getBaseContext(), MapPickerActivity.class);
-                String message = "hi";
-                intent.putExtra(EXTRA_MESSAGE, message);
+                Intent intent = new Intent(MainActivity.this, MapPickerActivity.class);
                 startActivity(intent);
 
             }

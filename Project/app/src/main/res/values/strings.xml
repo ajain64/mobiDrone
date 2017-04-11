@@ -6,4 +6,5 @@
         <item>ECG</item>
         <item>Brickyard</item>
     </string-array>
+    <string name="google_maps_key">AIzaSyBlGOkxhENzsNSxhG9jv_EWw4Jk17U8vTI</string>
 </resources>

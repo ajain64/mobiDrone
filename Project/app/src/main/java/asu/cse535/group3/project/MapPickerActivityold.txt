@@ -1,0 +1,105 @@
+package asu.cse535.group3.project;
+
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+
+public class MapPickerActivityold extends AppCompatActivity implements OnMapReadyCallback{
+
+    private MapView mapv;
+    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_map_picker);
+        mapv = (MapView) findViewById(R.id.mapView);
+        Bundle mapViewBundle = null;
+        if (savedInstanceState != null) {
+            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+        }
+        mapv.onCreate(mapViewBundle);
+        mapv.getMapAsync(this);
+
+
+
+        Button reqButton = (Button) findViewById(R.id.requestButton);
+        reqButton.setOnClickListener( new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(getBaseContext(), DroneMapActivity.class);
+                startActivity(intent);
+            }});
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapv.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mapv.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mapv.onStop();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        //map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        if (ActivityCompat.checkSelfPermission(this.getApplicationContext()
+                , Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getApplicationContext()
+                , Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
+        }
+        map.getUiSettings().setMyLocationButtonEnabled(true);
+        map.setMyLocationEnabled(true);
+        map.moveCamera(Cam);
+
+    }
+
+    @Override
+    protected void onPause() {
+        mapv.onPause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mapv.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapv.onLowMemory();
+    }
+
+
+}
