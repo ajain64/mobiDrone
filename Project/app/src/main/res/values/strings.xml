@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Project</string>
+    <string-array name="Favorite_Places">
+        <item>Memorial Union</item>
+        <item>Barrett, The Honors College</item>
+        <item>ECG</item>
+        <item>Brickyard</item>
+    </string-array>
+</resources>
