@@ -31,6 +31,12 @@
         android:entries="@array/Favorite_Places" />
 
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5" />
+
     <Button
         android:id="@+id/requestButton"
         style="@style/Widget.AppCompat.Button.Colored"

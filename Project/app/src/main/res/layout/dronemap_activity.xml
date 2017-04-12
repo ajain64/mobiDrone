@@ -2,30 +2,35 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     tools:context="asu.cse535.group3.project.MainActivity">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+
+
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_gravity="top"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
 
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView2"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            tools:layout_editor_absoluteX="10dp"
-            tools:layout_editor_absoluteY="12dp"
-            android:layout_weight="1.91" />
+        tools:layout_editor_absoluteX="-132dp"
+        tools:layout_editor_absoluteY="97dp">
 
-        <Button
-            android:id="@+id/button4"
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.MapFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Stop" />
+            android:layout_height="220dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="0.5"
+            tools:context=".MapLocationActivity" />
 
         <Button
             android:id="@+id/settingsButton"
@@ -33,18 +38,55 @@
             android:layout_height="wrap_content"
             android:text="Settings" />
 
-        <Button
-            android:id="@+id/button3"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Start Video" />
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <Button
+                android:id="@+id/stopButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.18"
+                android:text="Stop Navigation" />
+
+            <Button
+                android:id="@+id/lightButton"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.18"
+                android:text="Toggle Lights" />
+
+            <Button
+                android:id="@+id/videoButton"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.20"
+                android:text="Start Video" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textviewing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="viewing Video Stream"
+            android:textSize="30dp"
+            android:visibility="invisible" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/movieviewing"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/common_google_signin_btn_icon_dark"
-            android:layout_weight="2.96" />
+            android:layout_height="10dp"
+            android:layout_weight="9.95"
+            android:scaleType="centerCrop"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

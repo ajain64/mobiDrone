@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -62,8 +63,19 @@ public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCa
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(getBaseContext(), DroneMapActivity.class);
-                startActivity(intent);
+                intent.putExtra("dlat", mCurrLocationMarker.getPosition().latitude);
+                intent.putExtra("dlong", mCurrLocationMarker.getPosition().longitude);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivityForResult(intent,0);
             }});
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            setResult(RESULT_OK);
+            finish();
+        }
     }
 
     @Override
@@ -81,6 +93,27 @@ public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCa
     {
         mGoogleMap=googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+
+        googleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+            @Override
+            public void onMarkerDragStart(Marker arg0) {
+                return;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public void onMarkerDragEnd(Marker arg0) {
+                TextView dloc = (TextView) findViewById(R.id.textView);
+                dloc.setText(arg0.getPosition().latitude + " " + arg0.getPosition().longitude);
+            }
+
+            @Override
+            public void onMarkerDrag(Marker arg0) {
+                return;
+            }
+        });
+
 
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
