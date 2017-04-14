@@ -343,4 +343,5 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
                     .show();
         }
     }
+
 }

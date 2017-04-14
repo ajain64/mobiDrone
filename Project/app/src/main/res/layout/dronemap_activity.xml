@@ -7,21 +7,22 @@
     tools:context="asu.cse535.group3.project.MainActivity">
 
     <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp">
 
 
     </ScrollView>
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_gravity="top"
         android:orientation="vertical"
 
-        tools:layout_editor_absoluteX="-132dp"
-        tools:layout_editor_absoluteY="97dp">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <fragment
             android:id="@+id/map"
