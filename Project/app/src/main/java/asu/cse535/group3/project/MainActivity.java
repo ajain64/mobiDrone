@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button navButton = (Button) findViewById(R.id.NavigationButton);
 
+
+
         navButton.setOnClickListener( new android.view.View.OnClickListener() {
 
             @Override

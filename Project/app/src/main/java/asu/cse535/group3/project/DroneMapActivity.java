@@ -32,6 +32,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.ArrayList;
+
+import asu.cse535.group3.project.DroneServer;
+
+import static java.lang.Double.parseDouble;
 
 public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,LocationListener {
@@ -47,6 +54,10 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
     Marker mDestinationMarker;
     LocationRequest mLocationRequest;
     Location destloc;
+    LatLng currlatLng;
+    boolean dronepresent;
+    LatLng dronelatLng;
+    Marker mDroneMarker;
 
 
     @Override
@@ -77,8 +88,11 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
 
             @Override
             public void onClick(View v){
+
+
                 Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
                 startActivity(intent);
+
             }});
 
         final ImageView movieim = (ImageView) findViewById(R.id.movieviewing);
@@ -119,12 +133,13 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
                 if (lights){
                     lights = false;
                     lightButton.setBackgroundColor(Color.DKGRAY);
+                    DroneServer.EnableLight(false);
 
                 }
                 else{
                     lights = true;
                     lightButton.setBackgroundColor(Color.YELLOW);
-
+                    DroneServer.EnableLight(true);
 
                 }
             }});
@@ -226,21 +241,38 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
     @Override
     public void onLocationChanged(Location location)
     {
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        currlatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
 
         checkdistance(location, destloc);
 
 
 
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,mGoogleMap.getCameraPosition().zoom));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currlatLng,mGoogleMap.getCameraPosition().zoom));
         LatLng dll = new LatLng(dlatitude,dlongitude);
+        dronepresent = true;
+        if (dronepresent){
+            if (mDroneMarker != null) {
+                mDroneMarker.remove();
+            }
+            dronelatLng = new LatLng(location.getLatitude()+.001,location.getLongitude());
+            MarkerOptions dmarkerOptions = new MarkerOptions();
+            dmarkerOptions.position(dronelatLng);
+            dmarkerOptions.title("Drone");
+            if (lights) {
+                dmarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+            }
+            else{
+                dmarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+            }
+            mDestinationMarker = mGoogleMap.addMarker(dmarkerOptions);
+        }
 
 
 
 
-        if (initialpass==true){
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,13));
+        if (initialpass==true) {
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currlatLng, 13));
             initialpass = false;
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(dll);
@@ -248,7 +280,36 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
             mDestinationMarker = mGoogleMap.addMarker(markerOptions);
 
-        }
+
+            //directions:
+
+
+            String toparse = DroneServer.GetBestPath(currlatLng.latitude, currlatLng.longitude);
+            String[] parts = toparse.split("Start at \\(");
+            ArrayList<LatLng> points = new ArrayList<LatLng>();
+            for (int a = 1; a < parts.length; a++) {
+                parts[a] = parts[a].split("\\), E")[0];
+                Double lat = parseDouble(parts[a].split(",")[0]);
+                Double lng = parseDouble(parts[a].split(",")[1]);
+                LatLng temp = new LatLng(lat, lng);
+                points.add(temp);
+
+            }
+            PolylineOptions lineOptions = new PolylineOptions();
+            if (points.size() > 1)
+                {
+                    lineOptions.addAll(points);
+                    lineOptions.width(10);
+                    lineOptions.color(Color.BLUE);
+                    mGoogleMap.addPolyline(lineOptions);
+                }
+
+            }
+            String eta = DroneServer.GetEta(currlatLng.latitude,currlatLng.longitude);
+            TextView etaTextView = (TextView) findViewById(R.id.etaText);
+            etaTextView.setText("ETA: " + eta.replace("\"",""));
+
+
 
     }
 

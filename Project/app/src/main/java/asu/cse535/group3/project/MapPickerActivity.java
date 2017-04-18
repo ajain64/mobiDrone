@@ -38,8 +38,8 @@ public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCa
     boolean initialpass;
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
-    Location mLastLocation;
-    Marker mCurrLocationMarker;
+    LatLng currlatLng;
+    Marker mDLocationMarkerMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +63,14 @@ public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCa
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(getBaseContext(), DroneMapActivity.class);
-                intent.putExtra("dlat", mCurrLocationMarker.getPosition().latitude);
-                intent.putExtra("dlong", mCurrLocationMarker.getPosition().longitude);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivityForResult(intent,0);
+
+                DroneServer.RequestDrone(currlatLng.latitude,currlatLng.longitude,mDLocationMarkerMarker.getPosition().latitude,mDLocationMarkerMarker.getPosition().longitude);
+                
+                intent.putExtra("dlat", mDLocationMarkerMarker.getPosition().latitude);
+                intent.putExtra("dlong", mDLocationMarkerMarker.getPosition().longitude);
+                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                //startActivityForResult(intent,0);
+                startActivity(intent);
             }});
     }
 
@@ -105,7 +109,25 @@ public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCa
             @Override
             public void onMarkerDragEnd(Marker arg0) {
                 TextView dloc = (TextView) findViewById(R.id.textView);
-                dloc.setText(arg0.getPosition().latitude + " " + arg0.getPosition().longitude);
+                Location l1 = new Location("");
+                l1.setLatitude(arg0.getPosition().latitude);
+                l1.setLongitude(arg0.getPosition().longitude);
+
+                Location l2 = new Location("");
+                l2.setLatitude(currlatLng.latitude);
+                l2.setLongitude(currlatLng.longitude);
+                if (l1.distanceTo(l2) > 15){
+                    dloc.setText("Destination: " + arg0.getPosition().latitude + ", " + arg0.getPosition().longitude);
+                    Button reqButton = (Button) findViewById(R.id.requestButton);
+                    reqButton.setEnabled(true);
+                }
+                else{
+                    dloc.setText("Destination: Location is too close to current Location");
+                    Button reqButton = (Button) findViewById(R.id.requestButton);
+                    reqButton.setEnabled(false);
+                }
+
+
             }
 
             @Override
@@ -165,13 +187,11 @@ public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     public void onLocationChanged(Location location)
     {
-
-
-
+        currlatLng = new LatLng(location.getLatitude(), location.getLongitude());
 /*
         mLastLocation = location;
-        if (mCurrLocationMarker != null) {
-            mCurrLocationMarker.remove();
+        if (mDLocationMarkerMarker != null) {
+            mDLocationMarkerMarker.remove();
         }
 
         //Place current location marker
@@ -180,8 +200,8 @@ public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCa
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-        mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
-        mCurrLocationMarker.setDraggable(true);
+        mDLocationMarkerMarker = mGoogleMap.addMarker(markerOptions);
+        mDLocationMarkerMarker.setDraggable(true);
         */
 
         if (initialpass==true){
@@ -193,8 +213,8 @@ public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCa
             markerOptions.draggable(true);
             markerOptions.title("Current Position");
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-            mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
-            mCurrLocationMarker.setDraggable(true);
+            mDLocationMarkerMarker = mGoogleMap.addMarker(markerOptions);
+            mDLocationMarkerMarker.setDraggable(true);
         }
 
     }

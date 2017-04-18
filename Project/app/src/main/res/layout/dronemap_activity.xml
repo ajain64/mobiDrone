@@ -33,6 +33,15 @@
             android:layout_weight="0.5"
             tools:context=".MapLocationActivity" />
 
+        <TextView
+            android:id="@+id/etaText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="asdf"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
         <Button
             android:id="@+id/settingsButton"
             android:layout_width="match_parent"

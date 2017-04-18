@@ -33,17 +33,21 @@
 
     <TextView
         android:id="@+id/textView"
+        android:text="Destination: Invalid, please select from favorites list or drag the marker on the map"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.5" />
 
     <Button
         android:id="@+id/requestButton"
-        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0.24"
+        android:enabled="false"
         android:text="Request Drone"
-        android:layout_weight="0.24" />
+        style="@style/Widget.AppCompat.Button.Colored"/>
+
+
 
 
 </LinearLayout>
