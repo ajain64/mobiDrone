@@ -10,14 +10,15 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <Button
             android:id="@+id/button2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.06"
+            android:backgroundTint="@android:color/holo_blue_light"
             android:text="Login/Register" />
 
         <Button
@@ -25,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.16"
+            android:backgroundTint="@android:color/holo_green_light"
             android:text="Start Navigation" />
 
         <LinearLayout
@@ -36,12 +38,14 @@
                 android:id="@+id/PanicButton"
                 android:layout_width="192dp"
                 android:layout_height="match_parent"
+                android:backgroundTint="@android:color/holo_red_dark"
                 android:text="Panic" />
 
             <Button
                 android:id="@+id/button3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:backgroundTint="@android:color/holo_orange_light"
                 android:text="Emergency Contact" />
         </LinearLayout>
 

@@ -453,15 +453,29 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
 
 
     double[] nextCoordinates;
-    private double[] nextPoint() {    //Code for user path interpolation, returns next coordinates
+    private Location nextPoint(Location location) {    //Code for user path interpolation, returns next coordinates
 
+        Location next = location;
+        double lat, lon;
         double[] current = getUserCoordinates();
+        double lat0 = current[0];
+        double lon0 = current[1];
+        double stepX = 0.33; //0.33m = 1ft.
+        double stepY = 0.33; //0.33m = 1ft.
+        double dy = 0;
+        double dx = 0;
 
-        //code to calculate next coordinates
+        //code to figure out direction moving
 
+        lat = lat0 + (180/Math.PI)*(dy/6378137);
+        lon = lon0 + (180/Math.PI)*(dx/6378137)/(Math.cos(Math.PI/180.0*lat0));
 
+        nextCoordinates[0] = lat;
+        nextCoordinates[1] = lon;
+        next.setLongitude(lon);
+        next.setLatitude(lat);
 
-        return nextCoordinates;
+        return next;
 
     }
 
@@ -469,12 +483,19 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
     private void checkDeviation(Location location) {    //Returns true is user deviates from path
 
         boolean deviation = false;
-        Location nextLoc = location;
+        //Location nextLoc = location;
+        Location next = nextPoint(location);
+        //double nextLat = next[0];
+        //double nextLon = next[1];
 
         double lat = location.getLatitude();
         double lon = location.getLongitude();
 
-        double x = location.distanceTo(nextLoc);
+        double x = location.distanceTo(next);
+
+        if(x > 10){
+            deviation = true;
+        }
 
 
         //Code for calculating deviation

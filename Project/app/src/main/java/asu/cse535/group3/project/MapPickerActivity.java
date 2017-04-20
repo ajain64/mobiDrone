@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,10 +33,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,LocationListener {
+        GoogleApiClient.OnConnectionFailedListener,LocationListener,AdapterView.OnItemSelectedListener {
 
     private GoogleMap mGoogleMap;
     boolean initialpass;
+    boolean schedule = false;
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
     LatLng currlatLng;
@@ -55,7 +57,32 @@ public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCa
 
         getSupportActionBar().setTitle("Select Location");
 
+        Button radio1 = (Button) findViewById(R.id.radioButton);
+        radio1.setOnClickListener( new android.view.View.OnClickListener() {
 
+            @Override
+            public void onClick(View v){
+
+                schedule = false;
+
+               // DroneServer.RequestDrone(currlatLng.latitude,currlatLng.longitude,mDLocationMarkerMarker.getPosition().latitude,mDLocationMarkerMarker.getPosition().longitude);
+
+            }});
+
+        //Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        //spinner.setOnItemSelectedListener(this);
+
+        Button radio2 = (Button) findViewById(R.id.radioButton2);
+        radio2.setOnClickListener( new android.view.View.OnClickListener() {
+
+            @Override
+            public void onClick(View v){
+
+                schedule = true;
+
+                // DroneServer.RequestDrone(currlatLng.latitude,currlatLng.longitude,mDLocationMarkerMarker.getPosition().latitude,mDLocationMarkerMarker.getPosition().longitude);
+
+            }});
 
         Button reqButton = (Button) findViewById(R.id.requestButton);
         reqButton.setOnClickListener( new android.view.View.OnClickListener() {
@@ -64,8 +91,10 @@ public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCa
             public void onClick(View v){
                 Intent intent = new Intent(getBaseContext(), DroneMapActivity.class);
 
-                DroneServer.RequestDrone(currlatLng.latitude,currlatLng.longitude,mDLocationMarkerMarker.getPosition().latitude,mDLocationMarkerMarker.getPosition().longitude);
-                
+                if(!schedule) {
+                    DroneServer.RequestDrone(currlatLng.latitude, currlatLng.longitude, mDLocationMarkerMarker.getPosition().latitude, mDLocationMarkerMarker.getPosition().longitude);
+                }
+
                 intent.putExtra("dlat", mDLocationMarkerMarker.getPosition().latitude);
                 intent.putExtra("dlong", mDLocationMarkerMarker.getPosition().longitude);
                 //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -292,7 +321,15 @@ public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
 
+    public void onItemSelected(AdapterView<?> parent, View view,
+                               int pos, long id) {
+        // An item was selected. You can retrieve the selected item using
+        // parent.getItemAtPosition(pos)
+    }
 
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Another interface callback
+    }
 
 
 
