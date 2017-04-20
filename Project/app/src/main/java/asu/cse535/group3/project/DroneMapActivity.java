@@ -270,6 +270,7 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
 
 
         checkdistance(location, destloc);
+        checkDeviation(location);
 
 
 
@@ -435,5 +436,72 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
                     .show();
         }
     }
+
+
+
+
+    double[] userCoordinates;
+    private double[] getUserCoordinates() { //returns users current coordinates in array [x][y]
+
+
+        userCoordinates[0] = currlatLng.latitude;
+        userCoordinates[0] = currlatLng.longitude;
+
+        //Code to get gps data
+        return userCoordinates;
+    }
+
+
+    double[] nextCoordinates;
+    private double[] nextPoint() {    //Code for user path interpolation, returns next coordinates
+
+        double[] current = getUserCoordinates();
+
+        //code to calculate next coordinates
+
+
+
+        return nextCoordinates;
+
+    }
+
+
+    private void checkDeviation(Location location) {    //Returns true is user deviates from path
+
+        boolean deviation = false;
+        Location nextLoc = location;
+
+        double lat = location.getLatitude();
+        double lon = location.getLongitude();
+
+        double x = location.distanceTo(nextLoc);
+
+
+        //Code for calculating deviation
+
+        if (deviation) {
+            alertstart = true;
+            new AlertDialog.Builder(this)
+                    .setTitle("Navigation")
+                    .setMessage("You have left the path. Please return and press Continue")
+                    .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            setResult(RESULT_OK);
+                            finish();
+                        }
+                    })
+                    .create()
+                    .show();
+
+        }
+
+
+    }
+
+
+
+
+    
 
 }
