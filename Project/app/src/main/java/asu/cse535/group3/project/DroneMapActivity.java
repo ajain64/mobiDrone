@@ -54,6 +54,7 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
     boolean lights;
     boolean paused;
     boolean alertstart;
+    boolean coorUpdate;
     Marker mDestinationMarker;
     LocationRequest mLocationRequest;
     Location destloc;
@@ -267,6 +268,7 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
     public void onLocationChanged(Location location)
     {
         currlatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        coorUpdate = true;
 
 
         checkdistance(location, destloc);
@@ -441,11 +443,18 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
 
 
     double[] userCoordinates;
+    double[] empty = {-1,-1};
     private double[] getUserCoordinates() { //returns users current coordinates in array [x][y]
 
 
-        userCoordinates[0] = currlatLng.latitude;
-        userCoordinates[0] = currlatLng.longitude;
+        if(coorUpdate) {
+            userCoordinates[0] = currlatLng.latitude;
+            userCoordinates[0] = currlatLng.longitude;
+        }
+        else{
+
+            return empty;
+        }
 
         //Code to get gps data
         return userCoordinates;
@@ -454,6 +463,8 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
 
     double[] nextCoordinates;
     private Location nextPoint(Location location) {    //Code for user path interpolation, returns next coordinates
+
+
 
         Location next = location;
         double lat, lon;
@@ -464,6 +475,10 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
         double stepY = 0.33; //0.33m = 1ft.
         double dy = 0;
         double dx = 0;
+
+        if(current[0] == -1){
+            return location;
+        }
 
         //code to figure out direction moving
 
