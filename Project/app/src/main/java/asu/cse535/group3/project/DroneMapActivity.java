@@ -35,6 +35,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import asu.cse535.group3.project.DroneServer;
 
@@ -48,8 +49,10 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
     private GoogleMap mGoogleMap;
     GoogleApiClient mGoogleApiClient;
     boolean initialpass;
+    boolean dronemarkerplaced;
     boolean viewing;
     boolean lights;
+    boolean paused;
     boolean alertstart;
     Marker mDestinationMarker;
     LocationRequest mLocationRequest;
@@ -58,6 +61,8 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
     boolean dronepresent;
     LatLng dronelatLng;
     Marker mDroneMarker;
+    Random rndgen;
+
 
 
     @Override
@@ -66,9 +71,12 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
         setContentView(R.layout.dronemap_activity);
 
         Bundle ibundle = getIntent().getExtras();
+        dronemarkerplaced = false;
+        rndgen = new Random();
         initialpass = true;
         viewing = false;
         lights = false;
+        paused = false;
         alertstart = false;
         dlatitude = ibundle.getDouble("dlat");
         dlongitude = ibundle.getDouble("dlong");
@@ -121,6 +129,23 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
                     movieim.requestLayout();
                     movietext.setVisibility(View.VISIBLE);
 
+                }
+            }});
+
+        final Button pauseButton = (Button) findViewById(R.id.pauseButton);
+        pauseButton.setOnClickListener( new android.view.View.OnClickListener() {
+
+            @Override
+            public void onClick(View v){
+                if (paused){
+                    paused = false;
+                    pauseButton.setText("Pause");
+                    DroneServer.RequestResume();
+                }
+                else{
+                    paused = true;
+                    pauseButton.setText("Resume");
+                    DroneServer.RequestPause();
                 }
             }});
 
@@ -252,10 +277,15 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
         LatLng dll = new LatLng(dlatitude,dlongitude);
         dronepresent = true;
         if (dronepresent){
-            if (mDroneMarker != null) {
+            if (mDroneMarker!=null) {
                 mDroneMarker.remove();
             }
-            dronelatLng = new LatLng(location.getLatitude()+.001,location.getLongitude());
+
+            double drange = .0002;
+            double rndmlat = rndgen.nextDouble()* drange*2 - drange;
+            double rndmlng = rndgen.nextDouble()* drange*2 - drange;
+
+            dronelatLng = new LatLng(location.getLatitude()+rndmlat,location.getLongitude()+rndmlng);
             MarkerOptions dmarkerOptions = new MarkerOptions();
             dmarkerOptions.position(dronelatLng);
             dmarkerOptions.title("Drone");
@@ -265,7 +295,8 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
             else{
                 dmarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
             }
-            mDestinationMarker = mGoogleMap.addMarker(dmarkerOptions);
+            mDroneMarker = mGoogleMap.addMarker(dmarkerOptions);
+
         }
 
 
