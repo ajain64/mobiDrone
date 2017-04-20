@@ -159,36 +159,5 @@ public class DroneServer
 
 
 
-    double[] userCoordinates;
-    private double[] getUserCoordinates() { //returns users current coordinates in array [x][y]
-
-
-
-
-
-
-        //Code to get gps data
-        return userCoordinates;
-    }
-
-
-    double[] nextCoordinates;
-    private double[] nextPoint() {    //Code for user path interpolation, returns next coordinates
-
-
-
-        return nextCoordinates;
-
-    }
-
-
-    private boolean userDeviated(double coordinates) {    //Returns true is user deviates from path
-
-
-        return false;
-    }
-
-
-
 
 }
