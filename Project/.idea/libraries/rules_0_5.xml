@@ -2,6 +2,7 @@
   <library name="rules-0.5">
     <ANNOTATIONS>
       <root url="jar://$USER_HOME$/.android/build-cache/951bcefc999ef50b56f25314b60d27eb64110a78/output/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/0f659c449e66b4c53a9ccce0aface57c1c2fcd24/output/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
       <root url="jar://$USER_HOME$/.android/build-cache/951bcefc999ef50b56f25314b60d27eb64110a78/output/jars/classes.jar!/" />

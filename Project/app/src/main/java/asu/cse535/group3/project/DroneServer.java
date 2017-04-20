@@ -1,5 +1,7 @@
 package asu.cse535.group3.project;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.telecom.Call;
 
 import java.io.BufferedReader;
@@ -107,6 +109,50 @@ public class DroneServer
         CallService(SERVICE_URL + "EnableLight?on=" + on);
     }
 
+    public static Bitmap GetDroneImage()
+    {
+        InputStream input = null;
+        StringBuilder total = new StringBuilder();
+        HttpURLConnection connection = null;
+        Bitmap toReturn;
+        try
+        {
+            URL url = new URL(SERVICE_URL + "GetDroneImage");
+            connection = (HttpURLConnection) url.openConnection();
+            connection.connect();
+
+            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK)
+            {
+                System.out.println("Server gave message: " + connection.getResponseCode() + " " + connection.getResponseMessage());
+                return null;
+            }
+
+            input = connection.getInputStream();
+
+            toReturn = BitmapFactory.decodeStream(input);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            return null;
+        }
+        finally
+        {
+            try
+            {
+                if (input != null)
+                    input.close();
+            }
+            catch (IOException ex) {}
+
+            if (connection != null)
+                connection.disconnect();
+        }
+
+        return toReturn;
+    }
+
     private static String CallService(String uri)
     {
         InputStream input = null;
@@ -155,9 +201,4 @@ public class DroneServer
 
         return total.toString();
     }
-
-
-
-
-
 }
