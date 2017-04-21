@@ -123,6 +123,8 @@ public class DroneMapActivity extends AppCompatActivity implements OnMapReadyCal
                 }
                 else{
                     viewing = true;
+                    //retrieving image from the server
+                    movieim.setImageBitmap(DroneServer.GetDroneImage());
                     viewingButton.setText("Stop Video");
                     movieim.setVisibility(View.VISIBLE);
 
