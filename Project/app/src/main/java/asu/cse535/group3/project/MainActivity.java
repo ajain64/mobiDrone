@@ -1,6 +1,7 @@
 package asu.cse535.group3.project;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,10 +18,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Button navButton = (Button) findViewById(R.id.NavigationButton);
-
-
-
         navButton.setOnClickListener( new android.view.View.OnClickListener() {
 
             @Override
@@ -31,6 +30,31 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+        Button call = (Button) findViewById(R.id.button3);
+        call.setOnClickListener( new android.view.View.OnClickListener() {
+
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:4809653456"));
+                startActivity(intent);
+            }
+
+        });
+
+        Button login = (Button) findViewById(R.id.button2);
+        login.setOnClickListener( new android.view.View.OnClickListener() {
+
+            @Override
+            public void onClick(View v){
+                Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(loginIntent);
+            }
+
+        });
+
+        
 
         Button panicButton = (Button)findViewById(R.id.PanicButton);
         panicButton.setOnClickListener(new android.view.View.OnClickListener() {
